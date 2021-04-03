@@ -58,9 +58,16 @@ extern int testnum;
 #endif
 
 // External functions used by this file
-
-//extern void LockTest(void);
-extern void SemaphorePing(void);
+#if defined(CHANGED)
+extern void ThreadTest(int n);
+#endif
+#if defined(HW1_ELEVATOR)
+extern void Elevator(int numFloors);
+extern void ArrivingGoingFromTo(int atFloor, int toFloor);
+#endif
+extern void SemaphorePing(void) ;	
+extern void LockTest(void) ;
+extern void Ping(void) ;
 extern void ThreadTest(void), Copy(char *unixFile, char *nachosFile);
 extern void Print(char *file), PerformanceTest(void);
 extern void StartProcess(char *file), ConsoleTest(char *in, char *out);
@@ -102,10 +109,38 @@ main(int argc, char **argv)
         break;
       }
     }
-    
-    // SemaphorePing();
-     // LockTest();
-     ThreadTest();
+
+#ifdef CHANGED
+#ifdef HW1_ELEVATOR
+    Elevator(30);
+    ArrivingGoingFromTo(1, 4);
+    ArrivingGoingFromTo(1, 4);
+    ArrivingGoingFromTo(1, 3);
+    ArrivingGoingFromTo(1, 6);
+    ArrivingGoingFromTo(2, 3);
+    ArrivingGoingFromTo(1, 9);
+    ArrivingGoingFromTo(3, 4);
+    ArrivingGoingFromTo(4, 1);
+    ArrivingGoingFromTo(10, 5);
+    ArrivingGoingFromTo(11, 20);
+    ArrivingGoingFromTo(4, 7);
+    ArrivingGoingFromTo(23, 2);
+    ArrivingGoingFromTo(13, 14);
+    ArrivingGoingFromTo(10, 8);
+    ArrivingGoingFromTo(10, 5);
+    ArrivingGoingFromTo(11, 20);
+    ArrivingGoingFromTo(4, 7);
+    ArrivingGoingFromTo(10, 17);
+    ArrivingGoingFromTo(4, 12);
+    ArrivingGoingFromTo(4, 12);
+    ArrivingGoingFromTo(30, 1);
+#else
+    ThreadTest();
+    //Ping();
+    //SemaphorePing();
+    //LockTest();
+#endif
+#endif
 #endif
 
     for (argc--, argv++; argc > 0; argc -= argCount, argv += argCount) {

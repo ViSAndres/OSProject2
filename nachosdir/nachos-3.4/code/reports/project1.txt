@@ -1,0 +1,29 @@
+Project 1 Report
+Group 7
+
+Students Names:
+Eric Vilella
+Omar Laria
+Carlos Neira
+Dayani Gamez
+				
+Exercise 1: Simple Threads Programming 
+
+Before starting to work on exercise one program nachos was run to record the default output. The first change made was on file threadtest.cc to implement the new SimpleThread function.
+ From there on the rest was simple. The ThreadTest(int n) was implemented in threadtest.cc file and it was defined in main.cc. The biggest issue was presented when testing exercise one 
+since some instructions were a little confusing to me. Finally, I was able to figure it out. The code works correctly.
+			
+Exercise 2: Implementing Locks:
+	
+For exercise 2, I implemented changes on synch.cc and synch.h. The struggle was when I had to do implementations modifications on the threadtest.cc in order to make it work. then the 
+testing wasn't a problem. The output was correct.         
+
+Exercise 3: Implementing Conditions:
+
+For exercise 3 I hit a roadblock because I forgot some important syntax, but after that the rest was smooth sailing and the code runs with no problems.
+
+Exercise 4:Elevator question: 
+
+With exercise 4 I was able to create an initial code base though I was having trouble with the testing. Because I couldn't test very well, I am not sure if the code runs correctly.
+ Whatever I tried I could not get the code to test properly, as I have tried to ise the preprocessor directives with no avail. It would always default to the nachos threadtest code without fail. 
+

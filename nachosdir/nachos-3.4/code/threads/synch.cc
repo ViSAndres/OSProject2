@@ -146,6 +146,59 @@ bool Lock::isHeldByCurrentThread()
     return heldBy == currentThread;
 }
 
+
+
+Condition::Condition(char* debugName)
+{
+    name = debugName;
+    queue = new List;
+}
+Condition::~Condition()
+{
+    delete queue;
+}
+void Condition::Wait(Lock* conditionLock)
+{
+    if(conditionLock->isHeldByCurrentThread())
+    {
+        IntStatus oldLevel = interrupt->SetLevel(IntOff);
+        conditionLock->Release();
+        DEBUG('t',"***%s about to wait on %s\n", currentThread->getName(), name);
+        queue->Append((void*)currentThread);
+        currentThread->Sleep();
+        (void) interrupt->SetLevel(oldLevel);
+        conditionLock->Acquire();
+    } 
+}
+void Condition::Signal(Lock* conditionLock)
+{
+    if(conditionLock->isHeldByCurrentThread())
+    {
+        Thread *thread;
+        IntStatus oldLevel = interrupt->SetLevel(IntOff);
+        thread = (Thread *)queue->Remove();
+        if(thread != NULL)
+        {
+            scheduler->ReadyToRun(thread);
+        }
+        (void) interrupt->SetLevel(oldLevel);
+    }
+}
+void Condition::Broadcast(Lock* conditionLock)
+{
+    if(conditionLock->isHeldByCurrentThread())
+    {
+        Thread *thread;
+        IntStatus oldLevel = interrupt->SetLevel(IntOff);
+        thread = (Thread *)queue->Remove();
+        while(thread != NULL)
+        {
+            scheduler->ReadyToRun(thread);
+            thread = (Thread *)queue->Remove();
+        }
+        (void) interrupt->SetLevel(oldLevel);
+    } 
+}
 // Dummy functions -- so we can compile our later assignments 
 // Note -- without a correct implementation of Condition::Wait(), 
 // the test case in the network assignment won't work!
@@ -155,10 +208,10 @@ Lock::Lock(const char* debugName) {}
 Lock::~Lock() {}
 void Lock::Acquire() {}
 void Lock::Release() {}
-#endif
 
 Condition::Condition(const char* debugName) { }
 Condition::~Condition() { }
 void Condition::Wait(Lock* conditionLock) { ASSERT(FALSE); }
 void Condition::Signal(Lock* conditionLock) { }
 void Condition::Broadcast(Lock* conditionLock) { }
+#endif
