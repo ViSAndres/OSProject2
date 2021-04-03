@@ -14,6 +14,8 @@
 // All rights reserved.  See copyright.h for copyright notice and limitation 
 // synch.h -- synchronization primitives.  
 
+class Thread;
+
 #ifndef SYNCH_H
 #define SYNCH_H
 
@@ -65,7 +67,7 @@ class Semaphore {
 
 class Lock {
   public:
-    Lock(const char* debugName);  		// initialize lock to be FREE
+    Lock(char* debugName);  		// initialize lock to be FREE
     ~Lock();				// deallocate lock
     char* getName() { return name; }	// debugging assist
 
@@ -73,14 +75,17 @@ class Lock {
     void Release(); // they are both *atomic*
 
     bool isHeldByCurrentThread();	// true if the current thread
-					// holds this lock.  Useful for
-					// checking in Release, and in
-					// Condition variable ops below.
+					                // holds this lock.  Useful for
+					                // checking in Release, and in
+					                // Condition variable ops below.
 
-  private:
-    char* name;				// for debugging
-    // plus some other stuff you'll need to define
+    private:
+    char* name;	
+    int value;
+    List* queue;
+    Thread* heldBy;
 };
+
 
 // The following class defines a "condition variable".  A condition
 // variable does not have a value, but threads may be queued, waiting
